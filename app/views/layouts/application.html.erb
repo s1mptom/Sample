@@ -2,13 +2,53 @@
 <html>
 <head>
   <title>Sample</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+
   <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen' %>
+  <%= stylesheet_link_tag 'blueprint/print',  :media => 'print' %>
+  <%= stylesheet_link_tag 'custom', :media => 'screen' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div class="container">
+  <header>
+    <nav class="round">
+      <ul>
+        <li><%= link_to "home", root_path %></li>
+        <li><%= link_to "about", about_path %></li>
+        <li><%= link_to "news", news_path %></li>
 
-<%= yield %>
+      </ul>
+        <% if signed_in? %>
+          <nav class="round">
+            <ul>
+                <li><%= link_to "Your Shop Cart", shopcart_path %></li>
+                <li><%= link_to "Sign out", signout_path, :method => :delete %></li>
+            </ul>
+        <% else %>
+            <ul class="signinform">
+                <%= form_for(:session, :url => sessions_path) do |f| %>
 
+                    <div class="field1">
+                        <%= f.label :email %>
+                        <%= f.text_field :email %>
+                    </div>
+
+                    <div class="field1">
+                        <%= f.label :password %>
+                        <%= f.password_field :password %>
+                    </div>
+
+                    <div class="actions1">
+                        <%= f.submit "Sign in" %>
+                    </div>
+                <% end %>
+            </ul>
+        <% end %>
+  </header>
+  <section class="round">
+    <%= yield %>
+  </section>
+</div>
 </body>
 </html>
